@@ -1,0 +1,1 @@
+download fashion-2019-FGVC6 dataset, and use the script in demo.sh to  train
