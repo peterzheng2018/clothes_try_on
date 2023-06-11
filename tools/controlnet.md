@@ -3,8 +3,8 @@
 ## 🛠️ Installation
 
 ```bash
-git clone https://github.com/huggingface/diffusers
-cd diffusers
+git clone https://github.com/peterzheng2018/clothes_try_on.git
+cd clothes_try_on
 pip install -e .
 cd tools
 pip install -r requirements.txt

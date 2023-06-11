@@ -72,7 +72,7 @@ def main():
         instance_data_root=train_data_dir,
         instance_mode='val',
         instance_file='train.csv',
-        label_descriptions_file='label_descriptions.json'
+        label_descriptions_file='label_descriptions.json',
         tokenizer=tokenizer,
         size=256,
     )

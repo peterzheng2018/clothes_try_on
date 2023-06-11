@@ -36,7 +36,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.checkpoint
-import torch.utils.data import Dataset
+from torch.utils.data import Dataset
 import transformers
 from accelerate import Accelerator
 from accelerate.logging import get_logger
@@ -546,12 +546,12 @@ class ClothDataset(Dataset):
     
     def get_mask(self, img_id):
         a = self.df[self.df.ImageId == img_id]
-        a = a.groupby("CategoryId", as_index=False).agg({"EncodePixels": ' '.join, 'Height': 'first', 'Width': 'first'})
-        H = a.iloc(0, 2)
-        W = a.iloc(0, 3)
+        a = a.groupby("CategoryId", as_index=False).agg({"EncodedPixels": ' '.join, 'Height': 'first', 'Width': 'first'})
+        H = a.iloc[0, 2]
+        W = a.iloc[0, 3]
         masks = []
         categories = []
-        for line in a[['EncodePixels', 'CategoryId']].iterrows():
+        for line in a[['EncodedPixels', 'CategoryId']].iterrows():
             mask = np.full(H*W, dtype='int', fill_value=0)
             EncodePixels = line[1][0]
             pixel_loc = list(map(int, EncodePixels.split(' ')[0::2]))
@@ -564,7 +564,7 @@ class ClothDataset(Dataset):
         return masks, categories
     
     def new_mask(self, mask):
-        matrix = np.zeros((512, 512), dtype=np.uint)
+        matrix = np.zeros((512, 512), dtype='int')
         for i in range(0, len(mask)):
             mask[i] = cv2.resize(mask[i], (512, 512), interpolation=cv2.INTER_NEAREST)
         for m in mask:
@@ -669,7 +669,7 @@ def make_train_dataset(args, tokenizer, accelerator):
         instance_data_root=train_data_dir,
         instance_mode='train',
         instance_file='train.csv',
-        label_descriptions_file='label_descriptions.json'
+        label_descriptions_file='label_descriptions.json',
         tokenizer=tokenizer,
         size=args.resolution,
         center_crop=args.center_crop,
@@ -679,7 +679,7 @@ def make_train_dataset(args, tokenizer, accelerator):
         instance_data_root=train_data_dir,
         instance_mode='val',
         instance_file='train.csv',
-        label_descriptions_file='label_descriptions.json'
+        label_descriptions_file='label_descriptions.json',
         tokenizer=tokenizer,
         size=args.resolution,
         center_crop=args.center_crop,

@@ -1,4 +1,4 @@
-export MODEL_NAME=“runwayml/stable-diffusion-v1-5”
+export MODEL_NAME="runwayml/stable-diffusion-v1-5"
 export DATA_DIR=""
 
 function demo_11GB(){
