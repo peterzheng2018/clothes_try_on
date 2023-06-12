@@ -796,6 +796,8 @@ def main():
     # Create EMA for the unet.
     if args.use_ema:
         ema_unet = EMAModel(unet.parameters(), model_cls=UNet2DConditionModel, model_config=unet.config)
+    else:
+        ema_unet = None
 
     if args.enable_xformers_memory_efficient_attention:
         if is_xformers_available():

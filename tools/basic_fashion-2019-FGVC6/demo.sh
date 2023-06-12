@@ -18,7 +18,7 @@ function demo_11GB(){
 }
 
 function demo_16GB(){
-    accelerate train_fashion_2019.py \
+    accelerate launch train_fashion_2019.py \
         --pretrained_model_name_or_path $MODEL_NAME \
         --resolution 256 --random_flip \
         --train_batch_size 4 --gradient_accumulation_steps 4 --gradient_checkpointing \
@@ -35,7 +35,7 @@ function demo_16GB(){
 
 # use in normal
 function demo(){
-    accelerate train_fashion_2019.py \
+    accelerate launch train_fashion_2019.py \
         --pretrained_model_name_or_path $MODEL_NAME \
         --resolution 256 --random_flip \
         --train_batch_size 4 --gradient_accumulation_steps 4 --gradient_checkpointing \
