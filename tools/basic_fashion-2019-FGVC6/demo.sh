@@ -1,5 +1,5 @@
 export MODEL_NAME="runwayml/stable-diffusion-v1-5"
-export DATA_DIR=""
+export DATA_DIR="imaterialist-fashion-2019-FGVC6"
 
 function demo_11GB(){
     python train_fashion_2019.py \
