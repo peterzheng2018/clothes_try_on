@@ -51,6 +51,7 @@ def main():
     save_model = args.model_checkpoint
     train_data_dir = args.train_data_dir
     out_dir = args.save_data_dir
+    num_validation_images = 5
     
     if not osp.exists(out_dir):
         os.makedirs(out_dir)
@@ -93,7 +94,7 @@ def main():
         validation_prompt = batch["ori_text_prompt_mask"]
 
         images = []
-        for _ in range(args.num_validation_images):
+        for _ in range(num_validation_images):
             with torch.autocast("cuda"):
                 image = pipe(
                     validation_prompt,
@@ -126,4 +127,4 @@ def main():
             
         formatted_images = np.hstack(formatted_images)
         
-        cv2.imwrite(f"image_{prompt_mask}_{i}.png", formatted_images)
+        cv2.imwrite(f"{out_dir}/image_{prompt_mask}_{i}.png", formatted_images)

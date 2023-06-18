@@ -621,8 +621,10 @@ class ClothDataset(Dataset):
         example["input_ids"] = self.tokenize_captions_dataset(maskCategories)
         
         if self.instance_mode == "train":
-            example["edit_images"] = self.image_transforms(edit_image)
-            example["instance_images"] = self.image_transforms(instacne_image)
+            # example["edit_images"] = self.image_transforms(edit_image)
+            # example["instance_images"] = self.image_transforms(instacne_image)
+            example["edit_images"] = self.val_transforms(edit_image)
+            example["instance_images"] = self.val_transforms(instacne_image)
             example["instance_prompt_mask"] = self.image_transforms(instacne_mask)
         else:
             example["edit_images"] = self.val_transforms(edit_image)
