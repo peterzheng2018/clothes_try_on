@@ -6,7 +6,7 @@ python train_fashion_2019.py \
     --resolution 256 --random_flip \
     --train_batch_size 1 --gradient_accumulation_steps 16 --gradient_checkpointing \
     --max_train_steps 15000 \
-    --checkpointing_steps 1000 --checkpoints_total_limit 1 \
+    --checkpointing_steps 200 --checkpoints_total_limit 1 \
     --learning_rate 1e-05 --max_grad_norm=1 --lr_warmup_steps=0 \
     --conditioning_dropout_prob=0.05 \
     --use_8bit_adam \
@@ -14,7 +14,8 @@ python train_fashion_2019.py \
     --set_grads_to_none \
     --seed=42 \
     --train_data_dir $DATA_DIR \
-    --resume_from_checkpoint $RESUME_MODEL
+    --resume_from_checkpoint $RESUME_MODEL \
+    --validation_epochs 6 
 
 :'
 function demo_11GB(){

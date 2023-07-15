@@ -703,7 +703,10 @@ def download_image(url):
 
 def main():
     args = parse_args()
-
+    print('*************************************************')
+    print(' '.join(f'{k}={v}' for k, v in vars(args).items()))
+    print('*************************************************')
+    # import pdb; pdb.set_trace()
     if args.non_ema_revision is not None:
         deprecate(
             "non_ema_revision!=None",
@@ -998,7 +1001,7 @@ def main():
             resume_step = resume_global_step % (num_update_steps_per_epoch * args.gradient_accumulation_steps)
 
     # Only show the progress bar once on each machine.
-    progress_bar = tqdm(range(global_step, args.max_train_steps), disable=not accelerator.is_local_main_process)
+    progress_bar = tqdm(range(0, args.max_train_steps), disable=not accelerator.is_local_main_process)
     progress_bar.set_description("Steps")
 
     for epoch in range(first_epoch, args.num_train_epochs):
@@ -1006,10 +1009,18 @@ def main():
         train_loss = 0.0
         for step, batch in enumerate(train_dataloader):
             # Skip steps until we reach the resumed step
+            #import pdb; pdb.set_trace()
+            curr_step = step
             if args.resume_from_checkpoint and epoch == first_epoch and step < resume_step:
                 if step % args.gradient_accumulation_steps == 0:
                     progress_bar.update(1)
                 continue
+            
+            # curr_batch_step = curr_step / args.gradient_accumulation_steps
+            # if curr_batch_step==2823:
+            #     print('let us have a rest')
+            #     import pdb; pdb.set_trace()
+            #import ipdb;ipdb.set_trace()
 
             with accelerator.accumulate(unet):
                 # We want to learn the denoising process w.r.t the edited images which
@@ -1109,7 +1120,7 @@ def main():
                 break
 
         if accelerator.is_main_process:
-            if (epoch % args.validation_epochs == 0):
+            if ((epoch+1) % args.validation_epochs == 0):
                 log_validation(text_encoder,
                                tokenizer,
                                unet,
