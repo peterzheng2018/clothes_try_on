@@ -8,7 +8,7 @@ import numpy as np
 import torch
 from transformers import CLIPTextModel, CLIPTokenizer
 
-from train_fashin_2019 import ClothDataset, collate_fn
+from train_fashion_2019 import ClothDataset, collate_fn
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Simple example of a training script for InstructPix2Pix.")
@@ -107,14 +107,16 @@ def main():
                 ).images[0]
 
             images.append(image)
-
+        # import pdb; pdb.set_trace()
         image_logs.append(
-            {"validation_image": batch["ori_edit_values"][0], "prompt_mask": batch["ori_prompt_mask"][0], "images": images}
+            {"validation_image": batch["ori_edit_values"][0], "prompt_mask": batch["ori_prompt_mask"][0], 'text_prompt_mask': batch["ori_text_prompt_mask"][0], "images": images}
         )
         
     for i, log in enumerate(image_logs):
         images = log["images"]
         prompt_mask = log["prompt_mask"]
+        text_prompt_mask = log["text_prompt_mask"]
+        text_prompt_mask = text_prompt_mask.replace(";","_")
         validation_image = log["validation_image"]
         
         formatted_images = []
@@ -126,5 +128,10 @@ def main():
             formatted_images.append(np.asarray(image))
             
         formatted_images = np.hstack(formatted_images)
-        
-        cv2.imwrite(f"{out_dir}/image_{prompt_mask}_{i}.png", formatted_images)
+        # import pdb; pdb.set_trace()
+        cv2.imwrite(f"{out_dir}/image_{text_prompt_mask}_{i}.png", formatted_images)
+
+
+
+if __name__ == "__main__":
+    main()
